@@ -58,19 +58,19 @@ def make_window():
 
     Label(frame2, text="Event-Relation").grid(row=2, column=4, sticky=W)
     variable = StringVar()
-    variable.set("SUBEVENT") # default value
+    variable.set("None") # default value
     w1 = OptionMenu(frame2, variable,"SUBEVENT", "PURPOSE", "REASON", "ENABLEMENT", "PRECEDENCE", "RELATED")
     w1.grid(row=3, column =4, sticky=W)
 
     Label(frame2, text="Timex-Relation").grid(row=2, column=5, sticky=W)    
     var = StringVar()
-    var.set("BEFORE") # default value
+    var.set("None") # default value
     w2 = OptionMenu(frame2, var,"BEFORE", "AFTER" , "INCLUDES" , "IS_INCLUDED" ,"DURING" , "DURING_INV" , "SIMULTANEOUS" , "IAFTER" , "IBEFORE" ,"IDENTITY" , "BEGINS" , "ENDS" , "BEGUN_BY" , "ENDED_BY")
     w2.grid(row=3, column = 5, sticky=W)
 
     Label(frame2, text="Link-Type").grid(row=2, column=6, sticky=W)    
     var2 = StringVar()
-    var2.set("LINK") # default value
+    var2.set("None") # default value
     w3 = OptionMenu(frame2, var2,"LINK","TLINK")
     w3.grid(row=3, column = 6, sticky=W)
     
