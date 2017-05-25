@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from tkinter import *
+
 phonelist = [['Chris', 'Meyers', '241-343-4349'],
              ['Robert', 'Smith', '202-689-1234'],
              ['Janet', 'Jones', '609-483-5432'],
@@ -13,7 +14,11 @@ phonelist = [['Chris', 'Meyers', '241-343-4349'],
 def make_window():
     global select1, select2
     win = Tk()
+<<<<<<< HEAD
     frame3 = Frame(win)       # event display
+=======
+    frame3 = Frame(win)  # select of names
+>>>>>>> 3f2a6f153e02b0d5359b7d1d20fdc11ace43430b
     frame3.pack()
     Label(frame3, text="ID").grid(row=0, column=0, sticky=W)
     scroll1 = Scrollbar(frame3, orient=VERTICAL)
@@ -79,11 +84,10 @@ def set_select():
     phonelist.sort(key=lambda record: record[1])
     select1.delete(0, END)
     select2.delete(0, END)
-    
+
     for fname, lname, phone in phonelist:
         select1.insert(END, "{0}".format(lname))
         select2.insert(END, "{0}".format(fname))
-        
 
 win = make_window()
 set_select()
