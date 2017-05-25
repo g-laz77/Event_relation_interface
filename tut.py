@@ -10,9 +10,11 @@ phonelist = [['Chris', 'Meyers', '241-343-4349'],
              ['Mary', 'Zigler', '812-567-8901'],
              ['Bob', 'Smith', '856-689-1234']]
 
+a = 1
+bb = 1
 
 def make_window():
-    global select1, select2
+    global select1, select2, sour_evt, dest_evt, sour_tim, dest_tim, var2, var1, variable
     win = Tk()
     frame3 = Frame(win)       # event display
     frame3 = Frame(win)  # select of names
@@ -33,8 +35,6 @@ def make_window():
     #input
     frame2 = Frame(win)
     frame2.pack()
-
-    
 
     Label(frame2, text="Source-Event").grid(row=2, column=0)
     sour_evt = StringVar()
@@ -59,23 +59,37 @@ def make_window():
     Label(frame2, text="Event-Relation").grid(row=2, column=4, sticky=W)
     variable = StringVar()
     variable.set("SUBEVENT") # default value
-    w = OptionMenu(frame2, variable,"SUBEVENT", "PURPOSE", "REASON", "ENABLEMENT", "PRECEDENCE", "RELATED")
-    w.grid(row=3, column =4, sticky=W)
+    w1 = OptionMenu(frame2, variable,"SUBEVENT", "PURPOSE", "REASON", "ENABLEMENT", "PRECEDENCE", "RELATED")
+    w1.grid(row=3, column =4, sticky=W)
 
     Label(frame2, text="Timex-Relation").grid(row=2, column=5, sticky=W)    
     var = StringVar()
     var.set("BEFORE") # default value
-    w = OptionMenu(frame2, var,"BEFORE", "AFTER" , "INCLUDES" , "IS_INCLUDED" ,"DURING" , "DURING_INV" , "SIMULTANEOUS" , "IAFTER" , "IBEFORE" ,"IDENTITY" , "BEGINS" , "ENDS" , "BEGUN_BY" , "ENDED_BY")
-    w.grid(row=3, column = 5, sticky=W)
+    w2 = OptionMenu(frame2, var,"BEFORE", "AFTER" , "INCLUDES" , "IS_INCLUDED" ,"DURING" , "DURING_INV" , "SIMULTANEOUS" , "IAFTER" , "IBEFORE" ,"IDENTITY" , "BEGINS" , "ENDS" , "BEGUN_BY" , "ENDED_BY")
+    w2.grid(row=3, column = 5, sticky=W)
 
     Label(frame2, text="Link-Type").grid(row=2, column=6, sticky=W)    
     var2 = StringVar()
     var2.set("LINK") # default value
-    w = OptionMenu(frame2, var2,"LINK","TLINK")
-    w.grid(row=3, column = 6, sticky=W)
-
+    w3 = OptionMenu(frame2, var2,"LINK","TLINK")
+    w3.grid(row=3, column = 6, sticky=W)
+    
+    b1 = Button(frame2, text="Add", command=add_entry)
+    b1.grid(row = 4, column = 3, sticky =W)
     return win
 
+def add_entry():
+    fpoint = open("data.xml","a")
+    a = 1
+    b = 1
+    if var2.get() == "LINK":
+        fpoint.write("\n<LINK lid=\""+str(a)+"\" relType=\""+variable.get()+"\" eventID=\""+sour_evt.get()+"\" relatedToEvent=\""+dest_evt.get()+"\">")
+        a += 1
+    else:
+        fpoint.write("\n<TLINK lid=\""+str(bb)+"\" relType=\""+var1.get()+"\" eventID=\""+sour_evt.get()+"\" relatedToTime=\""+dest_tim.get()+"\">")
+        b += 1
+    fpoint.close()
+    set_select()
 
 def set_select():
     phonelist.sort(key=lambda record: record[1])
