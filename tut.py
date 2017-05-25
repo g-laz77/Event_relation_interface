@@ -14,11 +14,8 @@ phonelist = [['Chris', 'Meyers', '241-343-4349'],
 def make_window():
     global select1, select2
     win = Tk()
-<<<<<<< HEAD
     frame3 = Frame(win)       # event display
-=======
     frame3 = Frame(win)  # select of names
->>>>>>> 3f2a6f153e02b0d5359b7d1d20fdc11ace43430b
     frame3.pack()
     Label(frame3, text="ID").grid(row=0, column=0, sticky=W)
     scroll1 = Scrollbar(frame3, orient=VERTICAL)
