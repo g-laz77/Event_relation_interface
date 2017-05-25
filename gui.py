@@ -1,37 +1,55 @@
 #!/usr/bin/env python3
 from tkinter import *
-
-phonelist = [['Chris', 'Meyers', '241-343-4349'],
-             ['Robert', 'Smith', '202-689-1234'],
-             ['Janet', 'Jones', '609-483-5432'],
-             ['Ralph', 'Barnhart', '215-683-2341'],
-             ['Eric', 'Nelson', '571-485-2689'],
-             ['Ford', 'Prefect', '703-987-6543'],
-             ['Mary', 'Zigler', '812-567-8901'],
-             ['Bob', 'Smith', '856-689-1234']]
-
+import extract
+import json
+import pprint
 a = 1
 bb = 1
-
+# extract.extractor()
 def make_window():
-    global select1, select2, sour_evt, dest_evt, sour_tim, dest_tim, var2, var1, variable
+    global select1, select2, sour_evt, dest_evt, sour_tim, dest_tim, var2, var1, variable, xml_file, select3, select4
+    xml_file = input("Enter XML file name:")
     win = Tk()
+    
+    
+    # pprint.pprint(data)
+    # for k in data:
+    #     print(k)
+
     frame3 = Frame(win)       # event display
     frame3 = Frame(win)  # select of names
     frame3.pack()
-    Label(frame3, text="ID").grid(row=0, column=0, sticky=W)
+    
+    Label(frame3, text="eID").grid(row=0, column=0, sticky=W)
     scroll1 = Scrollbar(frame3, orient=VERTICAL)
-    scroll2 = Scrollbar(frame3, orient=VERTICAL)
-    select1 = Listbox(frame3, yscrollcommand=scroll1.set, height=6)
-    select2 = Listbox(frame3, yscrollcommand=scroll2.set, height=6)
+    select1 = Listbox(frame3, yscrollcommand=scroll1.set, height=40)
     scroll1.config(command=select1.yview)
     scroll1.grid(row = 1, column = 0)
+    select1.grid(row = 1, column = 0)
+    
+    
+    Label(frame3, text="Event").grid(row=0, column=1, sticky=W)
+    scroll2 = Scrollbar(frame3, orient=VERTICAL)
+    select2 = Listbox(frame3, yscrollcommand=scroll2.set, height=40)
     scroll2.config(command=select2.yview)
     scroll2.grid(row = 1, column = 1)
-    Label(frame3, text="Event").grid(row=0, column=1, sticky=W)
-    select1.grid(row = 1, column = 0)
     select2.grid(row = 1, column = 1)
 
+    Label(frame3, text="tID").grid(row=0, column=2, sticky=W)
+    scroll3 = Scrollbar(frame3, orient=VERTICAL)
+    select3 = Listbox(frame3, yscrollcommand=scroll3.set, height=40)
+    scroll3.config(command=select3.yview)
+    scroll3.grid(row = 1, column = 2)
+    select3.grid(row = 1, column = 2)
+
+    Label(frame3, text="Timex").grid(row=0, column=3, sticky=W)
+    scroll4 = Scrollbar(frame3, orient=VERTICAL)
+    select4 = Listbox(frame3, yscrollcommand=scroll4.set, height=40)
+    scroll4.config(command=select4.yview)
+    scroll4.grid(row = 1, column = 3)
+    select4.grid(row = 1, column = 3)
+    
+    
     #input
     frame2 = Frame(win)
     frame2.pack()
@@ -79,7 +97,7 @@ def make_window():
     return win
 
 def add_entry():
-    fpoint = open("data.xml","a")
+    fpoint = open(xml_file,"a")
     a = 1
     b = 1
     if var2.get() == "LINK":
@@ -92,13 +110,51 @@ def add_entry():
     set_select()
 
 def set_select():
-    phonelist.sort(key=lambda record: record[1])
+    # phonelist.sort(key=lambda record: record[1])
+    
+    json_data = extract.extractor(xml_file)
+    data = json.loads(json_data)
+    
     select1.delete(0, END)
     select2.delete(0, END)
+    select3.delete(0, END)
+    select4.delete(0, END)
+    # for i in data:
+    #     print(i)
+    d = 0
+    for i in data.items():
+        name = i[0]
+        y = json.dumps(i[1])
+        l =  json.loads(y)
+        #print(d)
+        for k in l.items():
 
-    for fname, lname, phone in phonelist:
-        select1.insert(END, "{0}".format(lname))
-        select2.insert(END, "{0}".format(fname))
+            if k[0] == "eid":
+                if d == 0:
+                    select1.insert(END, "{0}".format(k[1]))
+                    select2.insert(END, "{0}".format(i[0]))
+                    d = 1
+                else:
+                    select3.insert(END, "{0}".format("--"))
+                    select4.insert(END, "{0}".format("--"))
+                    select1.insert(END, "{0}".format(k[1]))
+                    select2.insert(END, "{0}".format(i[0]))
+                    d = 1
+                
+            elif k[0] == "tid":
+                    if d == 1:
+                        #print("hi")
+                        select3.insert(END, "{0}".format(k[1]))
+                        select4.insert(END, "{0}".format(i[0]))
+                        d = 0
+                    
+            #ßd = json.dumps(k[1])
+            #print(k)
+    
+
+    # for fname, lname, phone in phonelist:
+    #     select1.insert(END, "{0}".format(lname))
+    #     select2.insert(END, "{0}".format(fname))
 
 win = make_window()
 set_select()

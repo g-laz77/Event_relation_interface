@@ -1,2 +1,0 @@
-[ 'evt1' : "kick"]
-[ 'evt2' : "dive"]
