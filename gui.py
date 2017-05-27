@@ -7,9 +7,10 @@ a = 1
 bb = 1
 # extract.extractor()
 def make_window():
-    global select1, select2, sour_evt, dest_evt, sour_tim, dest_tim, var2, var1, variable, xml_file, select3, select4
+    global select1, select2, sour_evt, dest_evt, sour_tim, dest_tim, var2, var1, variable, xml_file, select3, select4, select5
     xml_file = input("Enter XML file name:")
     win = Tk()
+    win.attributes('-fullscreen', True)
     
     
     # pprint.pprint(data)
@@ -22,7 +23,7 @@ def make_window():
     
     Label(frame3, text="eID").grid(row=0, column=0, sticky=W)
     scroll1 = Scrollbar(frame3, orient=VERTICAL)
-    select1 = Listbox(frame3, yscrollcommand=scroll1.set, height=40)
+    select1 = Listbox(frame3, yscrollcommand=scroll1.set, height=50)
     scroll1.config(command=select1.yview)
     scroll1.grid(row = 1, column = 0)
     select1.grid(row = 1, column = 0)
@@ -30,29 +31,29 @@ def make_window():
     
     Label(frame3, text="Event").grid(row=0, column=1, sticky=W)
     scroll2 = Scrollbar(frame3, orient=VERTICAL)
-    select2 = Listbox(frame3, yscrollcommand=scroll2.set, height=40)
+    select2 = Listbox(frame3, yscrollcommand=scroll2.set, height=50)
     scroll2.config(command=select2.yview)
     scroll2.grid(row = 1, column = 1)
     select2.grid(row = 1, column = 1)
 
     Label(frame3, text="tID").grid(row=0, column=2, sticky=W)
     scroll3 = Scrollbar(frame3, orient=VERTICAL)
-    select3 = Listbox(frame3, yscrollcommand=scroll3.set, height=40)
+    select3 = Listbox(frame3, yscrollcommand=scroll3.set, height=50)
     scroll3.config(command=select3.yview)
     scroll3.grid(row = 1, column = 2)
     select3.grid(row = 1, column = 2)
 
     Label(frame3, text="Timex").grid(row=0, column=3, sticky=W)
     scroll4 = Scrollbar(frame3, orient=VERTICAL)
-    select4 = Listbox(frame3, yscrollcommand=scroll4.set, height=40)
+    select4 = Listbox(frame3, yscrollcommand=scroll4.set, height=50)
     scroll4.config(command=select4.yview)
     scroll4.grid(row = 1, column = 3)
     select4.grid(row = 1, column = 3)
     
-    Label(frame3, text="Text").grid(row=0, column=4, sticky=W)
+    Label(frame3, text="Annotated data").grid(row=0, column=4, sticky=W)
     scroll5 = Scrollbar(frame3, orient=VERTICAL)
-    select5 = Listbox(frame3, yscrollcommand=scroll5.set, height=40, width=30)
-    scroll5.config(command=select5.yview)
+    select5 = Text(frame3, yscrollcommand=scroll5.set, height=50, width=90, wrap = WORD)
+    scroll5.config(command=select5.xview)
     scroll5.grid(row = 1, column = 4)
     select5.grid(row = 1, column = 4)
     
@@ -120,16 +121,22 @@ def set_select():
     
     json_data = extract.extractor(xml_file)
     data = json.loads(json_data)
-    strip = open("stripped.txt","w")
-    data = strip.read()
+    #select5.delete(0, END-1)
+    with open('final.txt', 'r') as f:
+            con = f.read()
+            arr = con.split(u"\u0964")
+            print(arr)
+            for j in range(len(arr)):
+                arr[j]+=u"\u0964"
+                select5.insert(END,"{0}".format(arr[j]))
 
     select1.delete(0, END)
     select2.delete(0, END)
     select3.delete(0, END)
     select4.delete(0, END)
-    select5.delete(0, END)
     
-    select5.insert(END,"{0}".format(data))
+    
+    
     # for i in data:
     #     print(i)
     d = 0

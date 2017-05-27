@@ -37,7 +37,7 @@ def extractor(filename):
     m = re.findall(r'<[^<>]*>', con)
     for i in range(len(m)):
         con = con.replace(m[i], '')
-    print(type(con))
+    #print(type(con))
     with io.open('strip.txt', 'w', encoding='utf-8') as f:
         f.write(con)
     f.close()
@@ -47,17 +47,17 @@ def extractor(filename):
             for line in f:
                 count += 1
                 if count > 3:
-                    print(line, count)
+                    #print(line, count)
                     g.write(line)
 
         f.close()
     g.close()
 
-    # json = simplejson.dumps(final_dict, ensure_ascii=False)
+    json = simplejson.dumps(final_dict, ensure_ascii=False)
 
-    # f = open('output.txt','w+')
-    # f.write(json)
-    # return json
+    f = open('output.txt','w+')
+    f.write(json)
+    return json
 
 
-extractor('data.xml')
+#extractor('data.xml')
