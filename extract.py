@@ -10,6 +10,7 @@ def extractor(filename):
 
     final_dict = {}
     for child in root:
+        #print(child)
         # print(child.tag, child.attrib, child.text)
         if child.tag == 'TIMEX3':
             child.attrib.pop('valueFromFunction')
@@ -35,6 +36,8 @@ def extractor(filename):
     # f = open('output.txt','w+')
     # f.write(json)
     return json
+    l = open(filename, "w")
+
+extractor("data.xml")
 
 
-extractor('data.xml')

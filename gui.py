@@ -49,6 +49,12 @@ def make_window():
     scroll4.grid(row = 1, column = 3)
     select4.grid(row = 1, column = 3)
     
+    Label(frame3, text="Text").grid(row=0, column=4, sticky=W)
+    scroll5 = Scrollbar(frame3, orient=VERTICAL)
+    select5 = Listbox(frame3, yscrollcommand=scroll5.set, height=40, width=30)
+    scroll5.config(command=select5.yview)
+    scroll5.grid(row = 1, column = 4)
+    select5.grid(row = 1, column = 4)
     
     #input
     frame2 = Frame(win)
