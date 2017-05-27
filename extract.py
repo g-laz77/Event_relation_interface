@@ -9,6 +9,7 @@ def extractor(filename):
 
     final_dict = {}
     for child in root:
+        #print(child)
         # print(child.tag, child.attrib, child.text)
         if child.tag == 'TIMEX3':
             child.attrib.pop('valueFromFunction')
@@ -18,17 +19,20 @@ def extractor(filename):
             final_dict[child.text]=child.attrib
             # print(final_dict)
             # print(child.attrib)
-            #tree.write('output.xml')
+            tree.write('output.xml')
         elif child.tag == 'EVENT':
             child.attrib.pop('tense')
             child.attrib.pop('aspect')
             final_dict[child.text] = child.attrib
             # print(final_dict)
             # print(child.attrib)
-            #tree.write('output.xml')
+            tree.write('output.xml')
 
     json = simplejson.dumps(final_dict,ensure_ascii=False)
 
     # f = open('output.txt','w+')
     # f.write(json)
     return json
+    l = open(filename, "w")
+
+extractor("data.xml")
