@@ -16,6 +16,7 @@ def extractor(filename):
             child.attrib.pop('mod')
             child.attrib.pop('anchorTimeID')
             child.attrib.pop('functionInDocument')
+            child.text = child.text + '_' + child.attrib['tid']
             final_dict[child.text] = child.attrib
             # print(final_dict)
             # print(child.attrib)
@@ -23,6 +24,7 @@ def extractor(filename):
         elif child.tag == 'EVENT':
             child.attrib.pop('tense')
             child.attrib.pop('aspect')
+            child.text = child.text + '_' + child.attrib['eid']
             final_dict[child.text] = child.attrib
             # print(final_dict)
             # print(child.attrib)
