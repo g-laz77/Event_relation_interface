@@ -120,11 +120,16 @@ def set_select():
     
     json_data = extract.extractor(xml_file)
     data = json.loads(json_data)
-    
+    strip = open("stripped.txt","w")
+    data = strip.read()
+
     select1.delete(0, END)
     select2.delete(0, END)
     select3.delete(0, END)
     select4.delete(0, END)
+    select5.delete(0, END)
+    
+    select5.insert(END,"{0}".format(data))
     # for i in data:
     #     print(i)
     d = 0
