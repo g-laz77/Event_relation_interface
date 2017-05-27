@@ -1,16 +1,16 @@
 import xml.etree.ElementTree as ET
-import simplejson
+import simplejson, io, re
 
 
 def extractor(filename):
     tree = ET.parse(filename)
     root = tree.getroot()
 
-    print(root.tag)
+    # print(root.tag)
 
     final_dict = {}
     for child in root:
-        #print(child)
+        # print(child)
         # print(child.tag, child.attrib, child.text)
         if child.tag == 'TIMEX3':
             child.attrib.pop('valueFromFunction')
@@ -21,7 +21,7 @@ def extractor(filename):
             final_dict[child.text] = child.attrib
             # print(final_dict)
             # print(child.attrib)
-            tree.write('output2.xml', encoding="UTF-8", xml_declaration=True)
+            tree.write('output.xml', encoding="UTF-8", xml_declaration=True)
         elif child.tag == 'EVENT':
             child.attrib.pop('tense')
             child.attrib.pop('aspect')
@@ -29,15 +29,35 @@ def extractor(filename):
             final_dict[child.text] = child.attrib
             # print(final_dict)
             # print(child.attrib)
-            tree.write('output2.xml', encoding="UTF-8", xml_declaration=True)
+            tree.write('output.xml', encoding="UTF-8", xml_declaration=True)
 
-    json = simplejson.dumps(final_dict, ensure_ascii=False)
+    with open('output.xml', 'r') as f:
+        con = f.read()
+
+    m = re.findall(r'<[^<>]*>', con)
+    for i in range(len(m)):
+        con = con.replace(m[i], '')
+    print(type(con))
+    with io.open('strip.txt', 'w', encoding='utf-8') as f:
+        f.write(con)
+    f.close()
+    count = 0
+    with io.open('final.txt', 'w', encoding='utf-8') as g:
+        with open('strip.txt', 'r') as f:
+            for line in f:
+                count += 1
+                if count > 3:
+                    print(line, count)
+                    g.write(line)
+
+        f.close()
+    g.close()
+
+    # json = simplejson.dumps(final_dict, ensure_ascii=False)
 
     # f = open('output.txt','w+')
     # f.write(json)
-    return json
-    l = open(filename, "w")
-
-extractor("data.xml")
+    # return json
 
 
+extractor('data.xml')
