@@ -1,5 +1,9 @@
 import xml.etree.ElementTree as ET
-import simplejson, io, re
+
+# import flask
+import io
+import re
+import simplejson
 
 
 def extractor(filename):
@@ -37,7 +41,7 @@ def extractor(filename):
     m = re.findall(r'<[^<>]*>', con)
     for i in range(len(m)):
         con = con.replace(m[i], '')
-    #print(type(con))
+    # print(type(con))
     with io.open('strip.txt', 'w', encoding='utf-8') as f:
         f.write(con)
     f.close()
@@ -46,18 +50,28 @@ def extractor(filename):
         with open('strip.txt', 'r') as f:
             for line in f:
                 count += 1
-                if count > 3:
-                    #print(line, count)
-                    g.write(line)
+                if count > 2:
+                    if count is 3:
+                        ab = ''.join(line)
+                        # print(ab,type(ab))
+
+                        ab = ab.split('|')
+                        # print(ab[0])
+                        ab = ab[0].split(',')
+                        print(ab)
+                        ab = ab[1].split('(')
+                        g.write(ab[0])
+                    # print(line, count)
+                    else:
+                        g.write(line)
 
         f.close()
     g.close()
 
     json = simplejson.dumps(final_dict, ensure_ascii=False)
 
-    f = open('output.txt','w+')
+    f = open('output.txt', 'w+')
     f.write(json)
     return json
 
-
-#extractor('data.xml')
+extractor('data.xml')
