@@ -12,9 +12,9 @@ relationalMarkersAlt = ['ली', 'पहली', 'दूसरी', 'तीस�
 relationalMarkers = ['वे', 'पहले', 'दुसरे', 'तीसरे', 'चौथे', 'पांचवे', 'छत्ते', 'सातवे', 'आठवे', 'नौंवे ', 'दसवे']
 
 
-def Timex(file):
+def timex(file):
     count = 0
-    flag = 0
+    stat = 0
     with io.open('timextag.txt', 'w', encoding='utf-8') as g:
         with open(file, 'r') as f:
             for line in f:
@@ -25,7 +25,7 @@ def Timex(file):
                         ab = ab.split('|')
                         ab = ab[0].split(',')
                         if 'Publish' in ab[0]:
-                            flag = 1
+                            stat = 1
                             ab = ab[1].split('(')
                             ab = ab[0].split(' ')
                             ab.pop(0)
@@ -40,7 +40,7 @@ def Timex(file):
 
         f.close()
     g.close()
-    return flag
+    return stat
 
 
 def publishTag(file):
@@ -61,9 +61,9 @@ def publishTag(file):
 def annotate(file):
     with open(file, 'r') as f:
         count = 0
-        for line in f:
-            print('line: ',line)
-            # print(count)
+        lines = f.readlines()
+        last = lines[-1]
+        for line in lines:
             if count is 0:
                 # print(line, type(line))
                 pass
@@ -73,46 +73,62 @@ def annotate(file):
                 temp = arr[len(arr) - 1]
                 temp = temp[:-1]
                 # print(temp)
-                arr[len(arr) - 1] = temp
+                i = 0
+                if line is not last:
+                    arr[len(arr) - 1] = temp
                 print(arr)
-                for i in range(len(arr)):
-                    print(arr[i])
-                    if arr[i].isdigit():
+                while i < len(arr):
+                    # print(arr[i])
+                    if arr[i] == ' ':
+                        pass
+                    elif arr[i].isdigit():
                         # print('here')
-                        if int(arr[i]) < 13 and arr[i + 1] in baje:
-                            print('3', arr[i], arr[i + 1])  # 12 baje
+                        if int(arr[i]) < 13 and arr[i + 1] in baje:  # 12 baje
+                            print('3', arr[i], arr[i + 1])
+                            i += 2
                         # print('here3')
-                        if arr[i + 1] in monthDict:
+                        elif arr[i + 1] in monthDict:
                             # print('here2')
                             if i + 2 < len(arr):
                                 if int(arr[i + 2]) < 2017:  # 25 January 2017
                                     print('1', arr[i], arr[i + 1], arr[i + 2])
+                                    i += 3
                             else:  # 25 January
                                 print('2', arr[i], arr[i + 1])
+                                i += 2
 
                     elif arr[i].split('-')[0].isdigit() and arr[i].split('-')[1].isdigit():
-                        print('i hai', i)
-                        print(arr[1])
+                        # print(arr[1])
                         if arr[i + 1] in monthDict:  # 25-26 January
                             print('4', arr[i], arr[i + 1])
+                            i += 2
                         elif arr[i + 2] in timeOfDay:  # 25-26 ki raat
                             print('5', arr[i], arr[i + 1], arr[i + 2])
+                            i += 3
 
                     elif arr[i] in monthDict:
-                        # print('mila hai: ', arr[i], arr[i + 1])
-                        if i+1<len(arr):
+                        # print(arr[i], arr[i + 1])
+                        if i + 1 < len(arr):
                             if int(arr[i + 1]) < 2025:  # January 2017
                                 print('6', arr[i], arr[i + 1])
+                                i += 2
                         else:  # January
                             print('7', arr[i])
+                            i += 1
 
                     elif arr[i] in wrtGivenDate:
                         if arr[i + 1] in dateAnnotators:  # Agle mahine
                             print('8', arr[i], arr[i + 1])
+                            i += 2
+                    elif 'वें' in arr[i]:
+                        if arr[i + 1] in dateAnnotators:
+                            print('9', arr[i], arr[i + 1])
+                            i += 2
+                        pass
                 count += 1
 
 
-# flag = Timex('file_263')
+# flag = timex('file_263')
 annotate('sample')
 # if flag is 1:
 #     publishTag('timextag.txt')
